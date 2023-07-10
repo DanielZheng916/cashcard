@@ -68,4 +68,11 @@ public class CashCardController {
     private void putCashCard(@PathVariable Long id, @RequestBody CashCardRequest cashCardRequest, Principal principal) {
         cashCardService.update(id, cashCardRequest.getAmount(), principal.getName());
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    private void deleteCashCard(@PathVariable Long id, Principal principal) {
+        cashCardService.delete(id, principal.getName());
+    }
+
 }

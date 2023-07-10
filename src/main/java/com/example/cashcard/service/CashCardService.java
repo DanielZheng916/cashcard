@@ -60,4 +60,12 @@ public class CashCardService {
         CashCard updatedCashCard = new CashCard(cashCard.getId(), amount, name);
         cashCardRepository.save(updatedCashCard);
     }
+
+    public void delete(Long id, String name) {
+        CashCard cashCard = cashCardRepository.findByIdAndOwner(id, name);
+        if (cashCard == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cash card not found");
+        }
+        cashCardRepository.deleteById(id);
+    }
 }
