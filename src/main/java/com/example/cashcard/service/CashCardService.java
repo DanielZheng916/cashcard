@@ -6,6 +6,7 @@ import com.example.cashcard.repository.CashCardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,14 +22,13 @@ public class CashCardService {
 
     private final CashCardRepository cashCardRepository;
 
-    public CashCard findCashCardById(Long id) {
-        return cashCardRepository.findById(id)
-                .orElse(null);
+    public CashCard findCashCardById(Long id, String owner) {
+        return cashCardRepository.findByIdAndOwner(id, owner);
     }
 
-    public List<CashCard> findAll(Pageable pageable) {
+    public List<CashCard> findAll(Pageable pageable, String owner) {
         if (pageable != null) {
-            return cashCardRepository.findAll(
+            return cashCardRepository.findByOwner(owner,
                     PageRequest.of(
                             pageable.getPageNumber(),
                             pageable.getPageSize(),
@@ -41,9 +41,10 @@ public class CashCardService {
         }
     }
 
-    public CashCard create(CashCardRequest cashCardRequest) {
+    public CashCard create(CashCardRequest cashCardRequest, String owner) {
         CashCard cashCard = CashCard.builder()
                 .amount(cashCardRequest.getAmount())
+                .owner(owner)
                 .build();
         CashCard newCashCard = cashCardRepository.save(cashCard);
         return newCashCard;

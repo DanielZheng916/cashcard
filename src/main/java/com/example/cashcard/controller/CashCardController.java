@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -25,8 +26,8 @@ public class CashCardController {
     private final CashCardService cashCardService;
 
     @GetMapping("/{id}")
-    public CashCardResponse findById(@PathVariable Long id) {
-        CashCard cashCard = cashCardService.findCashCardById(id);
+    public CashCardResponse findById(@PathVariable Long id, Principal principal) {
+        CashCard cashCard = cashCardService.findCashCardById(id, principal.getName());
         if (cashCard != null) {
             CashCardResponse cashCardResponse = CashCardResponse.builder()
                     .id(cashCard.getId())
@@ -39,8 +40,8 @@ public class CashCardController {
     }
 
     @GetMapping
-    public List<CashCardResponse> findAllCashCard(Pageable pageable) {
-        List<CashCardResponse> cashCards = cashCardService.findAll(pageable).stream()
+    public List<CashCardResponse> findAllCashCard(Pageable pageable, Principal principal) {
+        List<CashCardResponse> cashCards = cashCardService.findAll(pageable, principal.getName()).stream()
                 .map(cashCard -> CashCardResponse.builder()
                         .id(cashCard.getId())
                         .amount(cashCard.getAmount())
@@ -50,8 +51,8 @@ public class CashCardController {
     }
 
     @PostMapping
-    private CashCardResponse createCashCard(@RequestBody CashCardRequest cashCardRequest) {
-        CashCard newCashCard = cashCardService.create(cashCardRequest);
+    private CashCardResponse createCashCard(@RequestBody CashCardRequest cashCardRequest, Principal principal) {
+        CashCard newCashCard = cashCardService.create(cashCardRequest, principal.getName());
         CashCardResponse cashCardResponse = CashCardResponse.builder()
                 .id(newCashCard.getId())
                 .amount(newCashCard.getAmount())

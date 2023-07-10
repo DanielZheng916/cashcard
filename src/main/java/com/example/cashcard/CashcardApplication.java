@@ -19,10 +19,17 @@ public class CashcardApplication {
         return args -> {
             CashCard cashCard = CashCard.builder()
                     .amount(123.45)
-                    .owner("saral1")
+                    .owner("sarah1")
                     .build();
 
             cashCardRepository.save(cashCard);
+
+            CashCard cashCard2 = CashCard.builder()
+                    .amount(200.00)
+                    .owner("kumar2")
+                    .build();
+
+            cashCardRepository.save(cashCard2);
         };
     }
 }
