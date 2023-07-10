@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class CashCardResponse {
     private Long id;
     private double amount;
+    private String owner;
 }

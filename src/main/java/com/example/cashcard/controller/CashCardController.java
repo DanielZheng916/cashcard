@@ -32,6 +32,7 @@ public class CashCardController {
             CashCardResponse cashCardResponse = CashCardResponse.builder()
                     .id(cashCard.getId())
                     .amount(cashCard.getAmount())
+                    .owner(cashCard.getOwner())
                     .build();
             return cashCardResponse;
         } else {
@@ -45,6 +46,7 @@ public class CashCardController {
                 .map(cashCard -> CashCardResponse.builder()
                         .id(cashCard.getId())
                         .amount(cashCard.getAmount())
+                        .owner(cashCard.getOwner())
                         .build())
                 .toList();
         return cashCards;
@@ -56,6 +58,7 @@ public class CashCardController {
         CashCardResponse cashCardResponse = CashCardResponse.builder()
                 .id(newCashCard.getId())
                 .amount(newCashCard.getAmount())
+                .owner(newCashCard.getOwner())
                 .build();
         return cashCardResponse;
     }
