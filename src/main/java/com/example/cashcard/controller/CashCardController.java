@@ -29,11 +29,7 @@ public class CashCardController {
     public CashCardResponse findById(@PathVariable Long id, Principal principal) {
         CashCard cashCard = cashCardService.findCashCardById(id, principal.getName());
         if (cashCard != null) {
-            CashCardResponse cashCardResponse = CashCardResponse.builder()
-                    .id(cashCard.getId())
-                    .amount(cashCard.getAmount())
-                    .owner(cashCard.getOwner())
-                    .build();
+            CashCardResponse cashCardResponse = mapToDto(cashCard);
             return cashCardResponse;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cash card not found");
@@ -43,11 +39,7 @@ public class CashCardController {
     @GetMapping
     public List<CashCardResponse> findAllCashCard(Pageable pageable, Principal principal) {
         List<CashCardResponse> cashCards = cashCardService.findAll(pageable, principal.getName()).stream()
-                .map(cashCard -> CashCardResponse.builder()
-                        .id(cashCard.getId())
-                        .amount(cashCard.getAmount())
-                        .owner(cashCard.getOwner())
-                        .build())
+                .map(this::mapToDto)
                 .toList();
         return cashCards;
     }
@@ -55,11 +47,7 @@ public class CashCardController {
     @PostMapping
     private CashCardResponse createCashCard(@RequestBody CashCardRequest cashCardRequest, Principal principal) {
         CashCard newCashCard = cashCardService.create(cashCardRequest, principal.getName());
-        CashCardResponse cashCardResponse = CashCardResponse.builder()
-                .id(newCashCard.getId())
-                .amount(newCashCard.getAmount())
-                .owner(newCashCard.getOwner())
-                .build();
+        CashCardResponse cashCardResponse =  mapToDto(newCashCard);
         return cashCardResponse;
     }
 
@@ -75,4 +63,11 @@ public class CashCardController {
         cashCardService.delete(id, principal.getName());
     }
 
+    private CashCardResponse mapToDto(CashCard cashCard) {
+        return CashCardResponse.builder()
+                .id(cashCard.getId())
+                .amount(cashCard.getAmount())
+                .owner(cashCard.getOwner())
+                .build();
+    }
 }
