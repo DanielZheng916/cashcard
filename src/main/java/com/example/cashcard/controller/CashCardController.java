@@ -62,4 +62,10 @@ public class CashCardController {
                 .build();
         return cashCardResponse;
     }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    private void putCashCard(@PathVariable Long id, @RequestBody CashCardRequest cashCardRequest, Principal principal) {
+        cashCardService.update(id, cashCardRequest.getAmount(), principal.getName());
+    }
 }

@@ -10,7 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -48,5 +50,14 @@ public class CashCardService {
                 .build();
         CashCard newCashCard = cashCardRepository.save(cashCard);
         return newCashCard;
+    }
+
+    public void update(Long id, double amount, String name) {
+        CashCard cashCard = cashCardRepository.findByIdAndOwner(id, name);
+        if (cashCard == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cash card not found");
+        }
+        CashCard updatedCashCard = new CashCard(cashCard.getId(), amount, name);
+        cashCardRepository.save(updatedCashCard);
     }
 }
