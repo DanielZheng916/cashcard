@@ -20,4 +20,5 @@ public class CashCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private double amount;
+    private String owner;
 }

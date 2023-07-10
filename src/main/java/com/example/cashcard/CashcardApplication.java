@@ -19,6 +19,7 @@ public class CashcardApplication {
         return args -> {
             CashCard cashCard = CashCard.builder()
                     .amount(123.45)
+                    .owner("saral1")
                     .build();
 
             cashCardRepository.save(cashCard);
